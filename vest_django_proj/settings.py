@@ -25,7 +25,7 @@ SECRET_KEY = '7+l(j@4el4wuy+0go8ao46-!!!--er$iwalzcsv%hv9h)6im1n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['django-env.aqs2pdymj2.us-east-2.elasticbeanstalk.com']
 
 
 # Application definition
@@ -80,16 +80,27 @@ WSGI_APPLICATION = 'vest_django_proj.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'vestdb',
+#         'USER': 'philip',
+#         'PASSWORD': 'phil123$',
+#         'HOST': 'localhost',
+#         'PORT': ''
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'vestdb',
+        'NAME': 'employee_db',
         'USER': 'philip',
         'PASSWORD': 'phil123$',
-        'HOST': 'localhost',
-        'PORT': ''
+        'HOST': 'employee-db-instance.ciaxg3frlw8x.us-east-2.rds.amazonaws.com',
+        'PORT': '3306'
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -128,3 +139,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
