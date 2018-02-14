@@ -94,7 +94,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'employee_db',
-        'USER': 'philip',
+        'USER': 'phil7394',
         'PASSWORD': 'phil123$',
         'HOST': 'employee-db-instance.ciaxg3frlw8x.us-east-2.rds.amazonaws.com',
         'PORT': '3306'
