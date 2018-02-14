@@ -1,0 +1,13 @@
+{% include 'partials/header.html' %}
+    <h1>Employees</h1>
+    <hr>
+    <ul>
+        {% for employee in employees %}
+         <li>
+            <a href="/empls/details/{{employee.id}}"> {{employee.name}} </a> <br> Age: {{employee.age}},
+             Email:{{employee.email}}, Address: {{employee.address}}
+         </li>
+        {% endfor %}
+    </ul>
+    <a href="/empls/add">Add employee</a>
+{% include 'partials/footer.html' %}
