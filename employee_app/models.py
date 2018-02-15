@@ -2,17 +2,20 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from datetime import date
 
 # Create your models here.
 
 
-class Employees(models.Model):
+class Employee(models.Model):
     name = models.CharField(max_length=200)
     age = models.IntegerField()
     email = models.CharField(max_length=200)
     address = models.TextField()
+    position = models.CharField(max_length=200)
+    hireDate = models.DateField(default=date.today(), blank=True)
+    experience = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
-    class Meta:
-        verbose_name_plural = 'Employees'
+

@@ -1,13 +1,30 @@
 {% include 'partials/header.html' %}
-    <h1>Employees</h1>
+    <h1 class="container">Employees Dashboard</h1>
     <hr>
-    <ul>
-        {% for employee in employees %}
-         <li>
-            <a href="/empls/details/{{employee.id}}"> {{employee.name}} </a> <br> Age: {{employee.age}},
-             Email:{{employee.email}}, Address: {{employee.address}}
-         </li>
-        {% endfor %}
-    </ul>
-    <a href="/empls/add">Add employee</a>
+    <div class="container">
+        <table class="table table-bordered">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Experience</th>
+                </tr>
+            </thead>
+            {% for employee in employees %}
+             <tr>
+                 <td>
+                     <a href="/empls/details/{{employee.id}}"> {{employee.name}} </a>
+                 </td>
+                 <td>
+                     {{employee.position}}
+                 </td>
+                 <td>
+                    {{employee.experience}}
+                 </td>
+
+             </tr>
+            {% endfor %}
+        </table>
+        <a href="/empls/add" class="btn btn-primary">Add employee</a>
+    </div>
 {% include 'partials/footer.html' %}
