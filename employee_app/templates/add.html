@@ -1,30 +1,53 @@
 {% include 'partials/header.html' %}
+
 <div class="container">
-    <h1>Add Employee</h1>
+    <h1 class="bg-faded">Add Employee</h1>
+</div>
     <hr>
+<div class="container">
+
     <form action="{% url 'add' %}" method="post" class="needs-validation">
         {% csrf_token %}
-
-        <label for="name">Name</label><br/>
-        <input type="text" name="name" placeholder="Full name" id="name" required>
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-3">
+            <input type="text" name="name" placeholder="full name" id="name" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="age" class="col-sm-2 col-form-label">Age</label>
+            <div class="col-sm-3">
+            <input type="number" name="age" placeholder="00" id="age" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="email"  class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-3">
+            <input type="text" name="email" placeholder="xyz@gmail.com" id="email" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="address"  class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-3">
+            <input type="text" name="address" placeholder="address" id="address" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="position"  class="col-sm-2 col-form-label">Position</label>
+            <div class="col-sm-3">
+            <input type="text" name="position" placeholder="position" id="position" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="hireDate"  class="col-sm-2 col-form-label">Hire Date</label>
+            <div class="col-sm-3">
+            <input type="date" name="hireDate" id="hireDate" class="form-control">
+            </div>
+        </div>
         <br/>
-        <label for="age">Age</label><br/>
-        <input type="number" name="age" placeholder="00" id="age" required>
-        <br/>
-        <label for="email">Email</label><br/>
-        <input type="text" name="email" placeholder="xyz@gmail.com" id="email" required>
-        <br/>
-        <label for="address">Address</label><br/>
-        <input type="text" name="address" placeholder="address" id="address" required>
-        <br/>
-        <label for="position">Position</label><br/>
-        <input type="text" name="position" placeholder="position" id="position" required>
-        <br/>
-        <label for="hireDate">Hire Date</label><br/>
-        <input type="date" name="hireDate" id="hireDate">
-        <br/>
-        <br/>
-        <input type="submit" value="Submit" class="btn btn-primary"/> &nbsp;<span><a href="/empls" class="btn btn-danger">Cancel</a></span>
+        <div class="col-sm-4">
+            <input type="submit" value="Submit" class="btn btn-primary float-right"/><span><a href="/empls" class="btn btn-danger float-left">Cancel</a></span>
+        </div>
         <br/>
         <br/>
 

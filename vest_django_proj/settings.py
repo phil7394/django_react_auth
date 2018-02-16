@@ -25,7 +25,7 @@ SECRET_KEY = '7+l(j@4el4wuy+0go8ao46-!!!--er$iwalzcsv%hv9h)6im1n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['django-env.aqs2pdymj2.us-east-2.elasticbeanstalk.com', 'localhost']
+# ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['django-env.aqs2pdymj2.us-east-2.elasticbeanstalk.com']
 
 
@@ -81,26 +81,29 @@ WSGI_APPLICATION = 'vest_django_proj.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'vestdb',
-#         'USER': 'philip',
-#         'PASSWORD': 'phil123$',
-#         'HOST': 'localhost',
-#         'PORT': ''
-#     }
-# }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'employee_db',
-        'USER': 'phil7394',
-        'PASSWORD': 'phil123$',
-        'HOST': 'employee-db-instance.ciaxg3frlw8x.us-east-2.rds.amazonaws.com',
-        'PORT': '3306'
+
+if 'RDS_DB_NAME' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'vestdb',
+            'USER': 'philip',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': ''
+        }
+    }
 
 
 # Password validation

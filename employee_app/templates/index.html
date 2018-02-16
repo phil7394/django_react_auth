@@ -2,8 +2,8 @@
     <h1 class="container">Employees Dashboard</h1>
     <hr>
     <div class="container">
-        <table class="table table-bordered">
-            <thead class="table-secondary">
+        <table class="table table-bordered table-hover">
+            <thead class="table-primary">
                 <tr>
                     <th>Name</th>
                     <th>Position</th>
@@ -25,6 +25,6 @@
              </tr>
             {% endfor %}
         </table>
-        <a href="/empls/add" class="btn btn-primary">Add employee</a>
+        <a href="/empls/add" class="btn btn-primary"><strong>+</strong> Add employee</a>
     </div>
 {% include 'partials/footer.html' %}
