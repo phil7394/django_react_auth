@@ -26,7 +26,7 @@ SECRET_KEY = '7+l(j@4el4wuy+0go8ao46-!!!--er$iwalzcsv%hv9h)6im1n'
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['django-env.aqs2pdymj2.us-east-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['django-env.aqs2pdymj2.us-east-2.elasticbeanstalk.com', 'localhost']
 
 
 # Application definition
@@ -98,7 +98,7 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'vestdb',
-            'USER': 'philip',
+            'USER': '',
             'PASSWORD': '',
             'HOST': 'localhost',
             'PORT': ''
