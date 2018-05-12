@@ -11,10 +11,14 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import json
+from six.moves.urllib import request
+
+from cryptography.x509 import load_pem_x509_certificate
+from cryptography.hazmat.backends import default_backend
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -26,13 +30,13 @@ SECRET_KEY = '7+l(j@4el4wuy+0go8ao46-!!!--er$iwalzcsv%hv9h)6im1n'
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['django-env.aqs2pdymj2.us-east-2.elasticbeanstalk.com', 'localhost']
-
+ALLOWED_HOSTS = ['django-env.aqs2pdymj2.us-east-2.elasticbeanstalk.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
 INSTALLED_APPS = [
     'employee_app.apps.EmployeeAppConfig',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +51,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -71,6 +76,42 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'vest_django_proj.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+jsonurl = request.urlopen("https://vestauth.auth0.com/.well-known/jwks.json")
+jwks = json.loads(jsonurl.read())
+cert = '-----BEGIN CERTIFICATE-----\n' + jwks['keys'][0]['x5c'][0] + '\n-----END CERTIFICATE-----'
+
+# certificate = load_pem_x509_certificate(str.encode(cert), default_backend())
+certificate = load_pem_x509_certificate(cert.encode('utf-8'), default_backend())
+publickey = certificate.public_key()
+
+JWT_AUTH = {
+    'JWT_PAYLOAD_GET_USERNAME_HANDLER':
+        'employee_app.user.jwt_get_username_from_payload_handler',
+    'JWT_PUBLIC_KEY': publickey,
+    'JWT_ALGORITHM': 'RS256',
+    'JWT_AUDIENCE': 'http://localhost:8000/empls/api',
+    'JWT_ISSUER': 'https://vestauth.auth0.com/',
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+}
+
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+#     'django.contrib.auth.backends.RemoteUserBackend',
+# ]
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.RemoteUserBackend',
+]
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -98,13 +139,12 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'vestdb',
-            'USER': '',
-            'PASSWORD': '',
+            'USER': 'philip',
+            'PASSWORD': 'phil123$',
             'HOST': 'localhost',
             'PORT': ''
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -124,7 +164,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -137,7 +176,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/

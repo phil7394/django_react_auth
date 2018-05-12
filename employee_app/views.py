@@ -4,8 +4,11 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect
 from datetime import date
 
+from rest_framework import generics
 
+from employee_app.serializers import EmpSerializer
 from .models import Employee
+from rest_framework.decorators import api_view
 
 # Create your views here.
 
@@ -18,8 +21,9 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-def details(request, id):
-    employee = Employee.objects.get(id=id)
+@api_view(['GET'])
+def details(request, pk):
+    employee = Employee.objects.get(pk=pk)
     context = {
         'employee': employee
     }
@@ -46,3 +50,8 @@ def add(request):
         return redirect('/empls')
     else:
         return render(request, 'add.html')
+
+
+class EmpDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmpSerializer
