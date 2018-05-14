@@ -1,57 +1,42 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, redirect
-from datetime import date
+import logging
+import os
 
+from django.conf import settings
+from django.http import HttpResponse
+from django.views.generic import View
 from rest_framework import generics
 
 from employee_app.serializers import EmpSerializer
 from .models import Employee
-from rest_framework.decorators import api_view
+
 
 # Create your views here.
-
-
-def index(request):
-    employees = Employee.objects.all()
-    context = {
-        'employees': employees
-    }
-    return render(request, 'index.html', context)
-
-
-@api_view(['GET'])
-def details(request, pk):
-    employee = Employee.objects.get(pk=pk)
-    context = {
-        'employee': employee
-    }
-    return render(request, 'details.html', context)
-
-
-def add(request):
-    if request.method == 'POST':
-        name = request.POST['name']
-        age = request.POST['age']
-        email = request.POST['email']
-        address = request.POST['address']
-        position = request.POST['position']
-        hireDate = request.POST['hireDate']
-
-        if hireDate is '':
-            hireDate = date.today()
-        if age is '':
-            age = 0
-        employee = Employee(name=name, age=age, email=email, address=address,
-                            position=position, hireDate=hireDate)
-        employee.save()
-
-        return redirect('/empls')
-    else:
-        return render(request, 'add.html')
-
 
 class EmpDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmpSerializer
+
+
+class FrontendAppView(View):
+    """
+    Serves the compiled frontend entry point (only works if you have run `yarn
+    run build`).
+    """
+
+    def get(self, request):
+        try:
+            with open(os.path.join(settings.REACT_APP_DIR, 'emp-app/build', 'index.html')) as f:
+                return HttpResponse(f.read())
+        except OSError:
+            logging.exception('Production build of app not found')
+            return HttpResponse(
+                """
+                This URL is only used when you have built the production
+                version of the app. Visit http://localhost:3000/ instead, or
+                run `yarn run build` to test the production version.
+                """,
+                status=501,
+            )

@@ -37,6 +37,7 @@ ALLOWED_HOSTS = ['django-env.aqs2pdymj2.us-east-2.elasticbeanstalk.com', 'localh
 INSTALLED_APPS = [
     'employee_app.apps.EmployeeAppConfig',
     'rest_framework',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -55,6 +57,34 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Frontend testing settings(not required for production) to allow CORS from localhost:3000
+# installed django-cors-headers
+# added middleware 'corsheaders.middleware.CorsMiddleware'
+# added below CORS settings
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000'
+)
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'vest_django_proj.urls'
 
@@ -105,6 +135,7 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
 
+# enable model backend for django admin login
 # AUTHENTICATION_BACKENDS = [
 #     'django.contrib.auth.backends.ModelBackend',
 #     'django.contrib.auth.backends.RemoteUserBackend',
@@ -181,4 +212,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+REACT_APP_DIR = os.path.join(BASE_DIR, 'employee_app/frontend')
+
+STATICFILES_DIRS = [
+    os.path.join(REACT_APP_DIR, 'emp-app/build', 'static'),
+]

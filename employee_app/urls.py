@@ -4,10 +4,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^details/(?P<pk>\w{0,50})/$', views.details),
-    url(r'^add/', views.add, name="add"),
-    url(r'^api/(?P<pk>[0-9]+)/$', views.EmpDetail.as_view())
+    url(r'^api/(?P<pk>\w+)$', views.EmpDetail.as_view()),
+    url(r'^', views.FrontendAppView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

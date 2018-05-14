@@ -10,6 +10,7 @@ from dateutil.relativedelta import relativedelta
 
 
 class Employee(models.Model):
+    user_id = models.CharField(max_length=200, primary_key=True)
     name = models.CharField(max_length=200)
     age = models.IntegerField()
     email = models.CharField(max_length=200)
